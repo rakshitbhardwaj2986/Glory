@@ -6,8 +6,8 @@ A production-ready backend for a job search platform built with **FastAPI**, **P
 
 ## Live Demo
 
-> **Frontend:** `http://localhost:8000`
-> **API Docs (Swagger):** `http://localhost:8000/docs`
+> **Frontend:** https://glory-production-9359.up.railway.app/
+> **API Docs (Swagger):** https://glory-production-9359.up.railway.app/docs
 
 "Glory is intentionally backend-focused — built to demonstrate production-grade API design, authentication architecture, database modeling, and ML integration rather than UI development. The frontend provides a working interface for the core user journey; the full depth of the platform is best explored through the interactive API documentation at /docs."
 
