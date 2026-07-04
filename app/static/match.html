@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Glory — Job Match</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0a0f;--surface:#13131a;--border:#1e1e2e;--accent:#6c63ff;--accent2:#a78bfa;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--r:12px}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,10,15,.85);backdrop-filter:blur(12px);z-index:10}
+    .logo{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-links{display:flex;gap:20px}.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--text)}
+    .btn-sm{padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .2s}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{border-color:var(--accent);color:var(--accent2)}
+    .nb{font-size:11px;font-weight:600;background:rgba(108,99,255,.15);color:var(--accent2);border:1px solid rgba(108,99,255,.25);padding:4px 10px;border-radius:20px}
+    .hero{text-align:center;padding:72px 24px 48px;max-width:680px;margin:0 auto}
+    .hero-ey{display:inline-block;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:18px}
+    .hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:18px}
+    .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{color:var(--muted);font-size:16px;max-width:480px;margin:0 auto}
+    .container{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+    .ig{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+    @media(max-width:720px){.ig{grid-template-columns:1fr}nav{padding:14px 20px}.nav-links{display:none}}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px}
+    .cl{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .cl .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    textarea{width:100%;min-height:220px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:14px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color .2s}
+    textarea::placeholder{color:var(--muted);opacity:.6}textarea:focus{border-color:var(--accent)}
+    .br{display:flex;justify-content:center;margin-bottom:32px}
+    .btn-a{display:flex;align-items:center;gap:10px;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:14px 36px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,transform .1s}
+    .btn-a:hover{background:#5a52e0}.btn-a:active{transform:scale(.98)}.btn-a:disabled{opacity:.5;cursor:not-allowed}
+    .sp{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #results{display:none;animation:fu .4s ease}
+    @keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .rg{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start}
+    @media(max-width:720px){.rg{grid-template-columns:1fr}}
+    .sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:32px 24px;text-align:center}
+    .sr{position:relative;width:140px;height:140px;margin:0 auto 20px}
+    .sr svg{transform:rotate(-90deg)}
+    .track{fill:none;stroke:var(--border);stroke-width:10}
+    .fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease;stroke-dasharray:345;stroke-dashoffset:345}
+    .scenter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .snum{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;line-height:1}
+    .spct{font-size:14px;color:var(--muted)}
+    .slv{display:inline-block;font-size:13px;font-weight:600;padding:5px 16px;border-radius:20px;margin-bottom:12px}
+    .lv-strong{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+    .lv-good{background:rgba(234,179,8,.15);color:var(--yellow);border:1px solid rgba(234,179,8,.25)}
+    .lv-weak{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.25)}
+    .shint{font-size:12px;color:var(--muted);line-height:1.5}
+    .sp2{display:flex;flex-direction:column;gap:16px}
+    .ss{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px}
+    .stitle{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .stitle.matched{color:var(--green)}.stitle.missing{color:var(--red)}
+    .sw{display:flex;flex-wrap:wrap;gap:8px}
+    .sk{font-size:12.5px;font-weight:500;padding:5px 13px;border-radius:6px}
+    .sk.matched{background:rgba(34,197,94,.1);color:#86efac;border:1px solid rgba(34,197,94,.2)}
+    .sk.missing{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.2)}
+    .em{font-size:13px;color:var(--muted);font-style:italic}
+    #err{display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:14px 18px;color:#fca5a5;font-size:13.5px;margin-bottom:24px}
+    footer{text-align:center;padding:24px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+    footer a{color:var(--accent2);text-decoration:none}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/jobs-page">Glory</a>
+  <div class="nav-links">
+    <a href="/jobs-page">Jobs</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/match" class="active">Match</a>
+    <a href="/docs">API Docs</a>
+  </div>
+  <span class="nb">ML Feature</span>
+</nav>
+<div class="hero">
+  <span class="hero-ey">AI-Powered Matching</span>
+  <h1>How well does your resume<br/><span>match this job?</span></h1>
+  <p>Paste your resume and a job description. Glory's ML model scores the semantic match and surfaces your skill gaps.</p>
+</div>
+<div class="container">
+  <div class="ig">
+    <div class="card"><div class="cl"><span class="dot"></span>Your Resume</div>
+      <textarea id="ri" placeholder="Paste your resume text here — skills, experience, roles..."></textarea></div>
+    <div class="card"><div class="cl"><span class="dot"></span>Job Description</div>
+      <textarea id="ji" placeholder="Paste the job description here — requirements, responsibilities..."></textarea></div>
+  </div>
+  <div class="br">
+    <button class="btn-a" id="abtn" onclick="analyze()">
+      <span class="sp" id="sp"></span><span id="abtxt">Analyze Match</span>
+    </button>
+  </div>
+  <div id="err"></div>
+  <div id="results">
+    <div class="rg">
+      <div class="sc">
+        <div class="sr">
+          <svg viewBox="0 0 120 120" width="140" height="140">
+            <circle class="track" cx="60" cy="60" r="55"/>
+            <circle class="fill" id="arc" cx="60" cy="60" r="55"/>
+          </svg>
+          <div class="scenter">
+            <span class="snum" id="snum">0</span>
+            <span class="spct">/ 100</span>
+          </div>
+        </div>
+        <div class="slv" id="slv">—</div>
+        <div class="shint" id="shint">Run an analysis to see your score.</div>
+      </div>
+      <div class="sp2">
+        <div class="ss"><div class="stitle matched">✓ Matched Skills</div><div class="sw" id="ms"></div></div>
+        <div class="ss"><div class="stitle missing">✗ Skills to Add</div><div class="sw" id="gs"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>Glory Job Platform · <a href="/docs">API Documentation</a></footer>
+<script>
+  // Pre-fill job textarea if coming from jobs page
+  const pre=sessionStorage.getItem("matchJob");
+  if(pre){document.getElementById("ji").value=pre;sessionStorage.removeItem("matchJob")}
+
+  async function analyze(){
+    const resume=document.getElementById("ri").value.trim();
+    const job=document.getElementById("ji").value.trim();
+    const err=document.getElementById("err");
+    err.style.display="none";
+    if(!resume||!job){err.textContent="Please fill in both fields.";err.style.display="block";return}
+    const btn=document.getElementById("abtn");
+    document.getElementById("sp").style.display="block";
+    document.getElementById("abtxt").textContent="Analyzing...";
+    btn.disabled=true;document.getElementById("results").style.display="none";
+    try{
+      const res=await fetch("/match",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({resume_text:resume,job_text:job})});
+      if(!res.ok){const e=await res.json();throw new Error(e.detail||"Error.")}
+      render(await res.json());
+    }catch(e){err.textContent=e.message;err.style.display="block";}
+    finally{document.getElementById("sp").style.display="none";document.getElementById("abtxt").textContent="Analyze Match";btn.disabled=false;}
+  }
+
+  function render(d){
+    const score=Math.round(d.match_score);
+    const color=score>=70?"#22c55e":score>=45?"#eab308":"#ef4444";
+    const arc=document.getElementById("arc");
+    arc.style.stroke=color;arc.style.strokeDashoffset=345-(score/100)*345;
+    let cur=0;const t=setInterval(()=>{cur=Math.min(cur+Math.ceil(score/40),score);document.getElementById("snum").textContent=cur;if(cur>=score)clearInterval(t)},20);
+    const lv=document.getElementById("slv");lv.textContent=d.level+" Match";lv.className="slv lv-"+d.level.toLowerCase();
+    document.getElementById("shint").textContent={Strong:"Great fit. Your profile aligns well with this role.",Good:"Decent match. Filling the skill gaps could strengthen your application.",Weak:"Low match. Consider tailoring your resume or upskilling for this role."}[d.level];
+    sk("ms",d.matched_skills,"matched");sk("gs",d.missing_skills,"missing");
+    document.getElementById("results").style.display="block";
+  }
+  function sk(id,skills,type){
+    const el=document.getElementById(id);
+    el.innerHTML=(!skills||!skills.length)?`<span class="em">${type==="matched"?"No common skills detected.":"No gaps detected."}</span>`:skills.map(s=>`<span class="sk ${type}">${s}</span>`).join("");
+  }
+  document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.key==="Enter")analyze()});
+</script>
+</body>
+</html>

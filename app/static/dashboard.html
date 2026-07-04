@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Glory — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0a0f;--surface:#13131a;--border:#1e1e2e;--accent:#6c63ff;--accent2:#a78bfa;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--r:12px}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,10,15,.9);backdrop-filter:blur(12px);z-index:10}
+    .logo{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav-links{display:flex;gap:20px}.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--text)}
+    .btn-sm{padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .2s}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-ghost:hover{border-color:var(--accent);color:var(--accent2)}
+    .btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#5a52e0}
+    .btn-danger{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.2)}.btn-danger:hover{background:rgba(239,68,68,.2)}
+    .btn-accept{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2);padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}.btn-accept:hover{background:rgba(34,197,94,.2)}
+    .btn-reject{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.2);padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}.btn-reject:hover{background:rgba(239,68,68,.2)}
+    .container{max-width:900px;margin:0 auto;padding:40px 24px 80px}
+    .page-eyebrow{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px}
+    .page-title{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px}
+    .page-sub{color:var(--muted);font-size:14px;margin-bottom:32px}
+    .role-badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 12px;border-radius:20px;margin-left:10px;background:rgba(108,99,255,.12);color:var(--accent2);border:1px solid rgba(108,99,255,.2);vertical-align:middle}
+    .section{margin-bottom:36px}
+    .sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .sec-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px}
+    .fg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+    @media(max-width:600px){.fg{grid-template-columns:1fr}}
+    .field label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+    .field input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px 13px;color:var(--text);font-family:'Inter',sans-serif;font-size:13.5px;outline:none;transition:border-color .2s}
+    .field input:focus{border-color:var(--accent)}
+    .rd{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .rf-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+    .rf-val{font-size:14px}
+    .skills-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:5px}
+    .skill-tag{font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;background:rgba(108,99,255,.1);color:var(--accent2);border:1px solid rgba(108,99,255,.2)}
+    .res-actions{display:flex;gap:8px;margin-top:18px;padding-top:18px;border-top:1px solid var(--border)}
+    .app-list{display:flex;flex-direction:column;gap:10px}
+    .app-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .app-title{font-weight:600;font-size:15px;margin-bottom:3px}
+    .app-meta{font-size:12.5px;color:var(--muted)}
+    .s-badge{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap}
+    .s-applied{background:rgba(108,99,255,.12);color:var(--accent2);border:1px solid rgba(108,99,255,.2)}
+    .s-accepted{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+    .s-rejected{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.2)}
+    /* Employer job accordion */
+    .emp-job{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+    .emp-job-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .2s}
+    .emp-job-header:hover{background:rgba(255,255,255,.03)}
+    .emp-job-title{font-weight:600;font-size:15px;margin-bottom:3px}
+    .emp-job-meta{font-size:12.5px;color:var(--muted)}
+    .emp-job-body{border-top:1px solid var(--border);padding:16px 20px;display:none}
+    .emp-job-body.open{display:block}
+    .applicant-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);gap:12px}
+    .applicant-row:last-child{border-bottom:none}
+    .applicant-name{font-weight:500;font-size:14px}
+    .applicant-meta{font-size:12px;color:var(--muted)}
+    .applicant-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .empty{text-align:center;padding:32px 20px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
+    .empty a{color:var(--accent2);text-decoration:none}
+    .toast{position:fixed;bottom:28px;right:28px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 18px;font-size:13.5px;display:none;z-index:100}
+    .toast.success{border-color:rgba(34,197,94,.3);color:#86efac}.toast.error{border-color:rgba(239,68,68,.3);color:#fca5a5}
+    footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+    footer a{color:var(--accent2);text-decoration:none}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/jobs-page">Glory</a>
+  <div class="nav-links">
+    <a href="/jobs-page">Jobs</a>
+    <a href="/dashboard" class="active">Dashboard</a>
+    <a href="/match">Match</a>
+    <a href="/docs">API Docs</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:13px;color:var(--muted)">Hi, <span id="nav-name" style="color:var(--accent2);font-weight:600">—</span></span>
+    <button class="btn-sm btn-ghost" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+<div class="container">
+  <div class="page-eyebrow">Your Profile</div>
+  <div class="page-title">Dashboard <span class="role-badge" id="role-badge">—</span></div>
+  <div class="page-sub" id="page-sub"></div>
+
+  <!-- JOBSEEKER VIEW -->
+  <div id="js-view" style="display:none">
+    <div class="section">
+      <div class="sec-header">
+        <div class="sec-title">My Resume</div>
+        <button class="btn-sm btn-primary" id="res-toggle-btn" onclick="toggleCreate()">+ Create Resume</button>
+      </div>
+      <div class="card" id="create-form" style="display:none;margin-bottom:12px">
+        <div class="fg">
+          <div class="field"><label>Target Role</label><input type="text" id="cr-role" placeholder="Backend Engineer"/></div>
+          <div class="field"><label>Years of Experience</label><input type="number" id="cr-exp" placeholder="1" min="0"/></div>
+          <div class="field" style="grid-column:1/-1"><label>Skills (comma separated)</label><input type="text" id="cr-skills" placeholder="Python, FastAPI, PostgreSQL"/></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-sm btn-primary" onclick="saveResume()">Save</button>
+          <button class="btn-sm btn-ghost" onclick="toggleCreate()">Cancel</button>
+        </div>
+      </div>
+      <div class="card" id="res-display" style="display:none">
+        <div class="rd">
+          <div><div class="rf-label">Name</div><div class="rf-val" id="rd-name">—</div></div>
+          <div><div class="rf-label">Target Role</div><div class="rf-val" id="rd-role">—</div></div>
+          <div><div class="rf-label">Experience</div><div class="rf-val" id="rd-exp">—</div></div>
+        </div>
+        <div style="margin-top:14px"><div class="rf-label">Skills</div><div class="skills-wrap" id="rd-skills"></div></div>
+        <div class="res-actions">
+          <button class="btn-sm btn-primary" onclick="toggleEdit()">Edit</button>
+          <button class="btn-sm btn-danger" onclick="deleteResume()">Delete</button>
+          <a href="/match" style="margin-left:auto"><button class="btn-sm btn-ghost">Check Job Match →</button></a>
+        </div>
+      </div>
+      <div class="card" id="edit-form" style="display:none;margin-top:12px">
+        <div class="fg">
+          <div class="field"><label>Target Role</label><input type="text" id="er-role"/></div>
+          <div class="field"><label>Years of Experience</label><input type="number" id="er-exp" min="0"/></div>
+          <div class="field" style="grid-column:1/-1"><label>Skills</label><input type="text" id="er-skills"/></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-sm btn-primary" onclick="updateResume()">Update</button>
+          <button class="btn-sm btn-ghost" onclick="toggleEdit()">Cancel</button>
+        </div>
+      </div>
+      <div class="empty" id="res-empty" style="display:none">No resume yet. Create one to start applying.</div>
+    </div>
+    <div class="section">
+      <div class="sec-header"><div class="sec-title">My Applications</div></div>
+      <div id="apps-container"><div class="empty">Loading...</div></div>
+    </div>
+  </div>
+
+  <!-- EMPLOYER VIEW -->
+  <div id="emp-view" style="display:none">
+    <div class="section">
+      <div class="sec-header">
+        <div class="sec-title">My Job Postings</div>
+        <a href="/jobs-page"><button class="btn-sm btn-primary">+ Post New Job</button></a>
+      </div>
+      <div id="emp-jobs"><div class="empty">Loading...</div></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<footer>Glory Job Platform · <a href="/docs">API Documentation</a></footer>
+<script>
+  const token=sessionStorage.getItem("token");
+  const user=JSON.parse(sessionStorage.getItem("user")||"null");
+  if(!token||!user)window.location.href="/";
+
+  document.getElementById("nav-name").textContent=user.full_name.split(" ")[0];
+  document.getElementById("role-badge").textContent=user.role.charAt(0).toUpperCase()+user.role.slice(1);
+
+  function ah(){return{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}
+  function toast(msg,type="success"){
+    const t=document.getElementById("toast");t.textContent=msg;t.className="toast "+type;t.style.display="block";
+    setTimeout(()=>t.style.display="none",3000);
+  }
+  function logout(){sessionStorage.clear();window.location.href="/"}
+
+  let resumeId=null;
+
+  if(user.role==="jobseeker"){
+    document.getElementById("js-view").style.display="block";
+    document.getElementById("page-sub").textContent="Manage your resume and track your applications.";
+    loadResume();loadApplications();
+  } else {
+    document.getElementById("emp-view").style.display="block";
+    document.getElementById("page-sub").textContent="View your job postings and manage applicants.";
+    loadEmployerJobs();
+  }
+
+  // ── RESUME ──
+  async function loadResume(){
+    try{
+      const res=await fetch("/resume/me",{headers:{"Authorization":"Bearer "+token}});
+      if(res.status===404){showNoResume();return}
+      const data=await res.json();
+      resumeId=data.id;showResume(data);
+    }catch{showNoResume();}
+  }
+  function showNoResume(){
+    document.getElementById("res-display").style.display="none";
+    document.getElementById("edit-form").style.display="none";
+    document.getElementById("create-form").style.display="none";
+    document.getElementById("res-empty").style.display="block";
+    document.getElementById("res-toggle-btn").style.display="inline-flex";
+  }
+  function showResume(d){
+    document.getElementById("res-empty").style.display="none";
+    document.getElementById("create-form").style.display="none";
+    document.getElementById("edit-form").style.display="none";
+    document.getElementById("res-display").style.display="block";
+    document.getElementById("res-toggle-btn").style.display="none";
+    document.getElementById("rd-name").textContent=d.name;
+    document.getElementById("rd-role").textContent=d.role;
+    document.getElementById("rd-exp").textContent=d.experience+" year"+(d.experience!==1?"s":"");
+    document.getElementById("rd-skills").innerHTML=d.skills.split(",").map(s=>`<span class="skill-tag">${s.trim()}</span>`).join("");
+    document.getElementById("er-role").value=d.role;
+    document.getElementById("er-exp").value=d.experience;
+    document.getElementById("er-skills").value=d.skills;
+  }
+  function toggleCreate(){
+    const f=document.getElementById("create-form");
+    const e=document.getElementById("res-empty");
+    const showing=f.style.display!=="none";
+    f.style.display=showing?"none":"block";
+    e.style.display=showing?"block":"none";
+  }
+  function toggleEdit(){
+    const f=document.getElementById("edit-form");
+    const d=document.getElementById("res-display");
+    const showing=f.style.display!=="none";
+    f.style.display=showing?"none":"block";
+    d.style.display=showing?"block":"none";
+  }
+  async function saveResume(){
+    const role=document.getElementById("cr-role").value.trim();
+    const experience=parseInt(document.getElementById("cr-exp").value)||0;
+    const skills=document.getElementById("cr-skills").value.trim();
+    if(!role||!skills)return toast("Fill in all fields.","error");
+    try{
+      const res=await fetch("/resume",{method:"POST",headers:ah(),body:JSON.stringify({role,experience,skills})});
+      const data=await res.json();
+      if(!res.ok)throw new Error(data.detail||"Could not save.");
+      resumeId=data.id;
+      const fresh=await fetch("/resume/me",{headers:{"Authorization":"Bearer "+token}});
+      showResume(await fresh.json());
+      toast("Resume saved!");
+    }catch(e){toast(e.message,"error");}
+  }
+  async function updateResume(){
+    if(!resumeId)return;
+    const role=document.getElementById("er-role").value.trim();
+    const experience=parseInt(document.getElementById("er-exp").value)||0;
+    const skills=document.getElementById("er-skills").value.trim();
+    if(!role||!skills)return toast("Fill in all fields.","error");
+    try{
+      const res=await fetch(`/resume/${resumeId}`,{method:"PUT",headers:ah(),body:JSON.stringify({role,experience,skills})});
+      const data=await res.json();
+      if(!res.ok)throw new Error(data.detail||"Could not update.");
+      const fresh=await fetch("/resume/me",{headers:{"Authorization":"Bearer "+token}});
+      showResume(await fresh.json());
+      toast("Resume updated!");
+    }catch(e){toast(e.message,"error");}
+  }
+  async function deleteResume(){
+    if(!resumeId||!confirm("Delete your resume?"))return;
+    try{
+      await fetch(`/resume/${resumeId}`,{method:"DELETE",headers:{"Authorization":"Bearer "+token}});
+      resumeId=null;showNoResume();toast("Resume deleted.");
+    }catch(e){toast(e.message,"error");}
+  }
+
+  // ── JOBSEEKER APPLICATIONS ──
+  async function loadApplications(){
+    const c=document.getElementById("apps-container");
+    try{
+      const [appsRes,jobsRes]=await Promise.all([
+        fetch("/applications/me",{headers:{"Authorization":"Bearer "+token}}),
+        fetch("/jobs")
+      ]);
+      if(!appsRes.ok){c.innerHTML='<div class="empty">Apply to jobs from the <a href="/jobs-page">Jobs page</a>.</div>';return}
+      const apps=await appsRes.json();
+      const jobs=await jobsRes.json();
+      const jobMap=Object.fromEntries(jobs.map(j=>[j.id,j]));
+      if(!apps.length){c.innerHTML='<div class="empty">No applications yet. <a href="/jobs-page">Browse jobs →</a></div>';return}
+      const cls={Applied:"s-applied",Accepted:"s-accepted",Rejected:"s-rejected"};
+      c.innerHTML='<div class="app-list">'+apps.map(a=>{
+        const j=jobMap[a.job_id]||{};
+        return`<div class="app-card">
+          <div><div class="app-title">${j.job_title||"Job #"+a.job_id}</div>
+          <div class="app-meta">${j.company||""}${j.location?" · "+j.location:""}</div></div>
+          <span class="s-badge ${cls[a.status]||"s-applied"}">${a.status}</span>
+        </div>`;
+      }).join("")+'</div>';
+    }catch{c.innerHTML='<div class="empty">Could not load applications.</div>';}
+  }
+
+  // ── EMPLOYER JOBS + APPLICANTS ──
+  async function loadEmployerJobs(){
+    const c=document.getElementById("emp-jobs");
+    try{
+      const [jobsRes,appsRes,usersJobRes]=await Promise.all([
+        fetch("/jobs"),
+        fetch("/applications/my-jobs",{headers:{"Authorization":"Bearer "+token}}),
+        fetch("/jobs")
+      ]);
+      const jobs=(await jobsRes.json()).filter(j=>j.posted_by===user.id);
+      const apps=appsRes.ok?await appsRes.json():[];
+
+      // Group applications by job_id
+      const appsByJob={};
+      apps.forEach(a=>{
+        if(!appsByJob[a.job_id])appsByJob[a.job_id]=[];
+        appsByJob[a.job_id].push(a);
+      });
+
+      if(!jobs.length){c.innerHTML='<div class="empty">No jobs posted yet. <a href="/jobs-page">Post one →</a></div>';return}
+
+      c.innerHTML=jobs.map(j=>{
+        const jobApps=appsByJob[j.id]||[];
+        const count=jobApps.length;
+        return`<div class="emp-job">
+          <div class="emp-job-header" onclick="toggleJobApps(${j.id})">
+            <div>
+              <div class="emp-job-title">${j.job_title}</div>
+              <div class="emp-job-meta">${j.company} · ${j.location} · ${j.type}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:12px;color:var(--accent2);font-weight:600">${count} applicant${count!==1?"s":""}</span>
+              <button class="btn-sm btn-danger" onclick="event.stopPropagation();deleteJob(${j.id})">Delete</button>
+              <span style="color:var(--muted);font-size:12px" id="arrow-${j.id}">▼</span>
+            </div>
+          </div>
+          <div class="emp-job-body" id="job-body-${j.id}">
+            ${count===0?'<div style="color:var(--muted);font-size:13px;padding:8px 0">No applicants yet.</div>':
+              jobApps.map(a=>`
+                <div class="applicant-row">
+                  <div>
+                    <div class="applicant-name">Applicant #${a.user_id}</div>
+                    <div class="applicant-meta">Applied for ${j.job_title}</div>
+                  </div>
+                  <div class="applicant-actions">
+                    <span class="s-badge ${a.status==="Accepted"?"s-accepted":a.status==="Rejected"?"s-rejected":"s-applied"}" id="status-${a.id}">${a.status}</span>
+                    ${a.status==="Applied"?`
+                      <button class="btn-accept" onclick="updateAppStatus(${a.id},'Accepted')">Accept</button>
+                      <button class="btn-reject" onclick="updateAppStatus(${a.id},'Rejected')">Reject</button>
+                    `:""}
+                  </div>
+                </div>`).join("")}
+          </div>
+        </div>`;
+      }).join("");
+    }catch(e){c.innerHTML='<div class="empty">Could not load jobs.</div>';}
+  }
+
+  function toggleJobApps(jobId){
+    const body=document.getElementById("job-body-"+jobId);
+    const arrow=document.getElementById("arrow-"+jobId);
+    const open=body.classList.toggle("open");
+    arrow.textContent=open?"▲":"▼";
+  }
+
+  async function updateAppStatus(appId,status){
+    try{
+      const res=await fetch(`/applications/${appId}`,{method:"PUT",headers:ah(),body:JSON.stringify({status})});
+      const data=await res.json();
+      if(!res.ok)throw new Error(data.detail||"Could not update.");
+      toast(status==="Accepted"?"Applicant accepted!":"Application rejected.");
+      loadEmployerJobs();
+    }catch(e){toast(e.message,"error");}
+  }
+
+  async function deleteJob(id){
+    if(!confirm("Delete this posting?"))return;
+    try{
+      await fetch(`/jobs/${id}`,{method:"DELETE",headers:{"Authorization":"Bearer "+token}});
+      toast("Deleted.");loadEmployerJobs();
+    }catch(e){toast(e.message,"error");}
+  }
+</script>
+</body>
+</html>

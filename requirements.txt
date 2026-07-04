@@ -1,0 +1,25 @@
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# Database
+sqlalchemy
+psycopg2-binary
+
+# Authentication
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+
+# Configuration
+python-dotenv
+
+# ML Feature
+sentence-transformers
+
+# Testing
+pytest
+httpx
+
+# Utilities
+pydantic[email]

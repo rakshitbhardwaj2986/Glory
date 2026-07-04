@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Glory — Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0a0f;--surface:#13131a;--border:#1e1e2e;--accent:#6c63ff;--accent2:#a78bfa;--green:#22c55e;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--r:12px}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--border);background:rgba(10,10,15,.85);backdrop-filter:blur(12px)}
+    .logo{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .page{min-height:calc(100vh - 65px);display:flex;align-items:center;justify-content:center;padding:40px 24px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:40px;width:100%;max-width:420px}
+    .eyebrow{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:10px}
+    .title{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;margin-bottom:6px;letter-spacing:-.5px}
+    .sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+    .tabs{display:flex;gap:4px;margin-bottom:28px;background:rgba(255,255,255,.04);border-radius:8px;padding:4px}
+    .tab{flex:1;padding:8px;border:none;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;background:transparent;color:var(--muted)}
+    .tab.active{background:var(--accent);color:#fff}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px}
+    .field input,.field select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color .2s;appearance:none}
+    .field input::placeholder{color:var(--muted);opacity:.6}
+    .field input:focus,.field select:focus{border-color:var(--accent)}
+    .field select option{background:#1a1a2e}
+    .btn{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn:hover{background:#5a52e0}.btn:active{transform:scale(.98)}.btn:disabled{opacity:.5;cursor:not-allowed}
+    .spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .msg{margin-top:14px;padding:11px 14px;border-radius:8px;font-size:13px;display:none}
+    .msg.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#fca5a5}
+    .msg.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+    footer a{color:var(--accent2);text-decoration:none}
+  </style>
+</head>
+<body>
+<nav><div class="logo">Glory</div><span style="font-size:13px;color:var(--muted)">Job Search Platform</span></nav>
+<div class="page">
+  <div class="card">
+    <div class="eyebrow">Welcome</div>
+    <div class="title">Your career starts here.</div>
+    <div class="sub">Sign in or create a free account.</div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login')">Sign In</button>
+      <button class="tab" onclick="switchTab('register')">Register</button>
+    </div>
+    <div id="login-form">
+      <div class="field"><label>Email</label><input type="email" id="l-email" placeholder="you@example.com"/></div>
+      <div class="field"><label>Password</label><input type="password" id="l-pass" placeholder="••••••••"/></div>
+      <button class="btn" id="l-btn" onclick="doLogin()">
+        <span class="spinner" id="l-spin"></span><span id="l-txt">Sign In</span>
+      </button>
+      <div class="msg" id="l-msg"></div>
+    </div>
+    <div id="reg-form" style="display:none">
+      <div class="field"><label>Full Name</label><input type="text" id="r-name" placeholder="John Smith"/></div>
+      <div class="field"><label>Email</label><input type="email" id="r-email" placeholder="you@example.com"/></div>
+      <div class="field"><label>Password</label><input type="password" id="r-pass" placeholder="••••••••"/></div>
+      <div class="field"><label>I am a...</label>
+        <select id="r-role"><option value="jobseeker">Job Seeker</option><option value="employer">Employer</option></select>
+      </div>
+      <button class="btn" id="r-btn" onclick="doRegister()">
+        <span class="spinner" id="r-spin"></span><span id="r-txt">Create Account</span>
+      </button>
+      <div class="msg" id="r-msg"></div>
+    </div>
+  </div>
+</div>
+<footer>Glory Job Platform · <a href="/docs">API Docs</a></footer>
+<script>
+  // Redirect if already logged in
+  if(sessionStorage.getItem("token")) window.location.href="/jobs-page";
+
+  function switchTab(t){
+    document.getElementById("login-form").style.display=t==="login"?"block":"none";
+    document.getElementById("reg-form").style.display=t==="register"?"block":"none";
+    document.querySelectorAll(".tab").forEach((el,i)=>el.classList.toggle("active",(i===0&&t==="login")||(i===1&&t==="register")));
+  }
+  function setLoad(b,s,t,loading,label){
+    document.getElementById(b).disabled=loading;
+    document.getElementById(s).style.display=loading?"block":"none";
+    document.getElementById(t).textContent=loading?"Please wait...":label;
+  }
+  function showMsg(id,text,type){
+    const el=document.getElementById(id);
+    el.textContent=text;el.className="msg "+type;el.style.display="block";
+  }
+  async function doLogin(){
+    const email=document.getElementById("l-email").value.trim();
+    const pass=document.getElementById("l-pass").value;
+    if(!email||!pass)return showMsg("l-msg","Please fill in all fields.","error");
+    setLoad("l-btn","l-spin","l-txt",true,"Sign In");
+    try{
+      // Login uses form encoding (OAuth2PasswordRequestForm)
+      const body=new URLSearchParams({username:email,password:pass});
+      const res=await fetch("/login",{method:"POST",body});
+      const data=await res.json();
+      if(!res.ok)throw new Error(data.detail||"Login failed.");
+      sessionStorage.setItem("token",data.access_token);
+      sessionStorage.setItem("user",JSON.stringify(data.user));
+      showMsg("l-msg","Signed in! Redirecting...","success");
+      setTimeout(()=>window.location.href="/jobs-page",700);
+    }catch(e){showMsg("l-msg",e.message,"error");}
+    finally{setLoad("l-btn","l-spin","l-txt",false,"Sign In");}
+  }
+  async function doRegister(){
+    const name=document.getElementById("r-name").value.trim();
+    const email=document.getElementById("r-email").value.trim();
+    const pass=document.getElementById("r-pass").value;
+    const role=document.getElementById("r-role").value;
+    if(!name||!email||!pass)return showMsg("r-msg","Please fill in all fields.","error");
+    setLoad("r-btn","r-spin","r-txt",true,"Create Account");
+    try{
+      const res=await fetch("/users",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({full_name:name,email,password:pass,role})});
+      const data=await res.json();
+      if(!res.ok)throw new Error(data.detail||"Registration failed.");
+      showMsg("r-msg","Account created! Signing you in...","success");
+      // Auto login after register
+      const body=new URLSearchParams({username:email,password:pass});
+      const lres=await fetch("/login",{method:"POST",body});
+      const ldata=await lres.json();
+      if(lres.ok){
+        sessionStorage.setItem("token",ldata.access_token);
+        sessionStorage.setItem("user",JSON.stringify(ldata.user));
+        setTimeout(()=>window.location.href="/jobs-page",800);
+      }
+    }catch(e){showMsg("r-msg",e.message,"error");}
+    finally{setLoad("r-btn","r-spin","r-txt",false,"Create Account");}
+  }
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Enter"){
+      if(document.getElementById("login-form").style.display!=="none")doLogin();
+      else doRegister();
+    }
+  });
+</script>
+</body>
+</html>
