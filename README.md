@@ -1,3 +1,12 @@
+---
+title: Glory
+emoji: 🚀
+colorFrom: purple
+colorTo: blue
+sdk: docker
+pinned: false
+---
+
 # Glory — Job Search Platform
 
 A production-ready backend for a job search platform built with **FastAPI**, **PostgreSQL**, and an **ML-powered resume-job matching engine**. Designed with real-world engineering practices: role-based access control, JWT authentication, session management, CI/CD pipeline, and a full test suite.
