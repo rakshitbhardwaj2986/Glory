@@ -137,31 +137,71 @@ Glory/
 
 ## Setup
 
-### 1. Clone and install
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/glory.git
-cd glory/Glory
+git clone https://github.com/rakshitbhardwaj2986/Glory.git
+cd Glory
+```
+
+### 2. Choose how you want to run Glory
+
+#### Option A — Run locally with Python
+
+Create and activate a virtual environment:
+
+```bash
 python -m venv .venv
-.venv\Scripts\activate      # Windows
-source .venv/bin/activate   # Mac/Linux
+```
+
+**Windows:**
+
+```bash
+.venv\Scripts\activate
+```
+
+**Mac/Linux:**
+
+```bash
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure environment
+#### Option B — Run with Docker
+
+Make sure Docker Desktop is installed and running.
+
+Build the Docker image:
+
+```bash
+docker build -t glory .
+```
+
+### 3. Configure environment
+
+Copy the example environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your PostgreSQL credentials and a secret key:
+Edit `.env` with your PostgreSQL credentials and secret key:
 
-```
+```env
 DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/glory
 SECRET_KEY=your-long-random-secret-key
 ```
 
-### 3. Run
+> PostgreSQL must be running and the `glory` database must exist.
+
+### 4. Run
+
+**Local:**
 
 ```bash
 uvicorn app.main:app --reload
@@ -169,7 +209,21 @@ uvicorn app.main:app --reload
 
 Open `http://localhost:8000` in your browser.
 
----
+**Docker:**
+
+```bash
+docker run --env-file .env -p 7860:7860 glory
+```
+
+Open `http://localhost:7860` in your browser.
+
+### API Documentation
+
+Once the application is running, Swagger UI is available at:
+
+* Local: `http://localhost:8000/docs`
+* Docker: `http://localhost:7860/docs`
+
 
 ## Running Tests
 
